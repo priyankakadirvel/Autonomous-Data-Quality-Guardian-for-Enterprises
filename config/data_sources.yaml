@@ -1,0 +1,27 @@
+# -------------------------------
+# Data Source Configuration File
+# -------------------------------
+
+sources:
+  csv_source:
+    name: "S&P 500 Dataset (Kaggle)"
+    path: "data/csv_source/sp500_stocks.csv"
+    enabled: true
+
+  db_source:
+    name: "Simulated Enterprise Database"
+    connection: "mysql+pymysql://user:password@localhost:3306/finance_db"
+    enabled: true
+
+  api_source:
+    name: "Alpha Vantage API"
+    base_url: "https://www.alphavantage.co/query"
+    api_key: "1NQJYRYFBF7SRUOS"
+    function: "TIME_SERIES_DAILY"
+    symbol: "AAPL"
+    enabled: true
+
+  web_source:
+    name: "Yahoo Finance Webscraped Data"
+    path: "data/webscraped/raw_finance_dataset.csv"
+    enabled: true

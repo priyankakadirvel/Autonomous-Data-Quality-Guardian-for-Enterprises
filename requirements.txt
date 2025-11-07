@@ -1,0 +1,10 @@
+pandas
+numpy
+scipy
+scikit-learn
+sqlalchemy
+psycopg2-binary
+great_expectations
+pyyaml
+requests
+streamlit

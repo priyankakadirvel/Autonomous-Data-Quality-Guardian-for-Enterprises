@@ -1,0 +1,20 @@
+# Configuration for database connection
+# ---------------------------------
+# Database Connection Configuration
+# ---------------------------------
+
+mysql:
+  host: "localhost"
+  port: 3306
+  user: "root"
+  password: "root"
+  database: "finance_db"
+
+postgres:
+  host: "localhost"
+  port: 5432
+  user: "postgres"
+  password: "admin"
+  database: "finance_data"
+
+# You can switch between MySQL and Postgres in your code using the desired connection string

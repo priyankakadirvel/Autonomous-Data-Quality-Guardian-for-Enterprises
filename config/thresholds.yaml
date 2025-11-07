@@ -1,0 +1,24 @@
+# Configuration for data quality thresholds
+# ---------------------------------
+# Data Quality & Drift Thresholds
+# ---------------------------------
+
+data_quality:
+  completeness: 0.95      # Minimum acceptable completeness
+  uniqueness: 0.90        # Minimum acceptable uniqueness
+  numeric_validity: 0.95  # Numeric validity threshold
+
+drift_detection:
+  p_value_threshold: 0.05  # Significance level for KS test
+  severity_labels:
+    low: "> 0.1"
+    medium: "0.05 - 0.1"
+    high: "< 0.05"
+
+anomaly_detection:
+  contamination_rate: 0.05   # Percentage of anomalies allowed
+  retrain_trigger_threshold: 0.10  # When anomaly rate exceeds this, retrain model
+
+alerting:
+  email: "data_team@enterprise.com"
+  slack_webhook: "https://hooks.slack.com/services/your/slack/webhook"

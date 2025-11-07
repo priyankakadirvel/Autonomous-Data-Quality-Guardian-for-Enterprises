@@ -1,0 +1,16 @@
+2025-11-05 23:50:08,801 - INFO - Logger initialized successfully.
+2025-11-05 23:50:08,807 - INFO - Starting Autonomous Data Quality Guardian Pipeline...
+2025-11-05 23:50:11,031 - INFO - Configuration Validation Passed.
+2025-11-05 23:50:15,547 - INFO - Data Quality Report: {'completeness': np.float64(1.0), 'uniqueness': np.float64(1.0), 'numeric_validity': np.float64(1.0)}
+2025-11-05 23:50:15,548 - INFO - Drift Report: {'Open': 'N/A', 'Close': 'N/A', 'Volume': 'N/A'}
+2025-11-05 23:50:15,569 - INFO - Anomaly Report: {}
+2025-11-05 23:50:15,570 - INFO - Agent Reasoning: {'summary': 'Detected drifts in []. Recommend checking API refresh timing.', 'impact': 'Low', 'action': 'All stable.'}
+2025-11-05 23:50:15,612 - INFO - Reports archived at: data/reports\data_quality_report_20251105_235015.json
+2025-11-05 23:52:54,291 - INFO - Logger initialized successfully.
+2025-11-05 23:52:54,295 - INFO - Starting Autonomous Data Quality Guardian Pipeline...
+2025-11-05 23:52:56,567 - INFO - Configuration Validation Passed.
+2025-11-05 23:53:05,879 - INFO - Data Quality Report: {'completeness': np.float64(1.0), 'uniqueness': np.float64(1.0), 'numeric_validity': np.float64(1.0)}
+2025-11-05 23:53:05,880 - INFO - Drift Report: {'Open': 'N/A', 'Close': 'N/A', 'Volume': 'N/A'}
+2025-11-05 23:53:05,905 - INFO - Anomaly Report: {}
+2025-11-05 23:53:05,905 - INFO - Agent Reasoning: {'summary': 'Detected drifts in []. Recommend checking API refresh timing.', 'impact': 'Low', 'action': 'All stable.'}
+2025-11-05 23:53:05,941 - INFO - Reports archived at: data/reports\data_quality_report_20251105_235305.json
