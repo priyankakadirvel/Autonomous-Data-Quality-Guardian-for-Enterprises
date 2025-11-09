@@ -15,7 +15,7 @@ def save_json(data, file_path):
     ensure_dir_exists(os.path.dirname(file_path))
     with open(file_path, "w") as f:
         json.dump(data, f, indent=4)
-    print(f"JSON file saved → {file_path}")
+    print(f"JSON file saved -> {file_path}")
 
 
 def load_json(file_path):
@@ -35,7 +35,7 @@ def save_dataframe(df, file_path):
     """Save a pandas DataFrame to CSV."""
     ensure_dir_exists(os.path.dirname(file_path))
     df.to_csv(file_path, index=False)
-    print(f"DataFrame saved → {file_path}")
+    print(f"DataFrame saved -> {file_path}")
 
 
 def timestamped_filename(prefix, extension=".json"):

@@ -25,25 +25,31 @@ def load_config():
 # Create Great Expectations context and datasource (v1.0+)
 # ------------------------------------------------------------
 def create_context(cfg):
-    """Initialize Great Expectations context and add Postgres datasource (new API)."""
-    print("Creating Great Expectations context (v1.0+)...")
+    """Initialize Great Expectations context and add Postgres datasource (Fluent API)."""
+    print("Creating Great Expectations context (Fluent API)...")
 
     import great_expectations as gx
     from great_expectations.data_context import FileDataContext
+    import tempfile
+    import shutil
 
-    # Create or load the GE context
-    context = gx.get_context()  # This returns a FileDataContext
+    # Create a temporary directory for the DataContext
+    temp_dir = tempfile.mkdtemp()
+    context = gx.get_context(project_root_dir=temp_dir)
 
-    # Define a PostgreSQL datasource configuration
+
+    # Add or update the datasource using the Fluent API
+    connection_string = (
+        f"postgresql+psycopg2://{cfg['user']}:{cfg['password']}@"
+        f"{cfg['host']}:{cfg['port']}/{cfg['database']}"
+    )
+    
     datasource_config = {
         "name": "postgres_datasource",
         "class_name": "Datasource",
         "execution_engine": {
             "class_name": "SqlAlchemyExecutionEngine",
-            "connection_string": (
-                f"postgresql+psycopg2://{cfg['user']}:{cfg['password']}@"
-                f"{cfg['host']}:{cfg['port']}/{cfg['database']}"
-            ),
+            "connection_string": connection_string,
         },
         "data_connectors": {
             "default_runtime_data_connector_name": {
@@ -53,9 +59,12 @@ def create_context(cfg):
         },
     }
 
-    # Add or update the datasource in the context
-    context.add_datasource(**datasource_config)
-    print("PostgreSQL Datasource added successfully (v1.0+ API).")
+    context.add_or_update_datasource(**datasource_config)
+
+    print("PostgreSQL Datasource added successfully (Fluent API).")
+
+    # Clean up the temporary directory after use
+    # shutil.rmtree(temp_dir)
 
     return context
 
@@ -68,13 +77,23 @@ def build_expectations(context, cfg, schema):
     print("Building Great Expectations expectation suite...")
 
     suite_name = "data_quality_suite"
-    suite = context.create_expectation_suite(suite_name, overwrite_existing=True)
+    context.create_expectation_suite(suite_name, overwrite_existing=True)
+
+    batch_request = {
+        "datasource_name": "postgres_datasource",
+        "data_connector_name": "default_runtime_data_connector_name",
+        "data_asset_name": f"{cfg['schema']}.{cfg['table']}",
+        "runtime_parameters": {
+            "query": f"SELECT * FROM {cfg['schema']}.{cfg['table']};"
+        },
+        "batch_identifiers": {
+            "default_identifier_name": "default_identifier"
+        },
+    }
 
     validator = context.get_validator(
-        datasource_name="postgres_datasource",
-        data_connector_name="default_runtime_data_connector_name",
-        data_asset_name=f"{cfg['schema']}.{cfg['table']}",
-        create_expectation_suite_with_name=suite_name,
+        batch_request=batch_request,
+        expectation_suite_name=suite_name,
     )
 
     # Expect table to have rows
@@ -96,7 +115,7 @@ def build_expectations(context, cfg, schema):
         elif "int" in dtype or "float" in dtype or "double" in dtype or "numeric" in dtype:
             validator.expect_column_min_to_be_between(name, min_value=0, strict_min=False)
 
-    context.save_expectation_suite(suite, suite_name)
+    validator.save_expectation_suite(discard_failed_expectations=False)
     print("Expectation suite built successfully.")
 
 
@@ -115,20 +134,23 @@ def run_validation(context, cfg):
         from great_expectations.checkpoint import Checkpoint
         checkpoint_class = Checkpoint
 
+    batch_request = {
+        "datasource_name": "postgres_datasource",
+        "data_connector_name": "default_runtime_data_connector_name",
+        "data_asset_name": f"{cfg['schema']}.{cfg['table']}",
+        "runtime_parameters": {
+            "query": f"SELECT * FROM {cfg['schema']}.{cfg['table']};"
+        },
+        "batch_identifiers": {
+            "default_identifier_name": "default_identifier"
+        },
+    }
     checkpoint = checkpoint_class(
         name="data_quality_checkpoint",
         data_context=context,
         validations=[
             {
-                "batch_request": {
-                    "runtime_parameters": {
-                        "query": f"SELECT * FROM {cfg['schema']}.{cfg['table']};"
-                    },
-                    "datasource_name": "postgres_datasource",
-                    "data_connector_name": "default_runtime_data_connector_name",
-                    "data_asset_name": f"{cfg['schema']}.{cfg['table']}",
-                    "batch_identifiers": {"default_identifier_name": "default_id"},
-                },
+                "batch_request": batch_request,
                 "expectation_suite_name": "data_quality_suite",
             }
         ],

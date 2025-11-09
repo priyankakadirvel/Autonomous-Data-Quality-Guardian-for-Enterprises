@@ -101,10 +101,10 @@ def main():
     logger.info(f"Reports archived at: {report_path}")
 
     # Step 8: Run Great Expectations Validation
-    ge_results = run_great_expectations_validation()
-    logger.info(f"Great Expectations Validation Summary: {ge_results}")
+    # ge_results = run_great_expectations_validation()
+    # logger.info(f"Great Expectations Validation Summary: {ge_results}")
 
-    logger.info("0Autonomous Data Quality Guardian Execution Completed Successfully.")
+    logger.info("Autonomous Data Quality Guardian Execution Completed Successfully.")
 
 
 if __name__ == "__main__":

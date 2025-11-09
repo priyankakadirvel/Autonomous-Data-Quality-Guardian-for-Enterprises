@@ -1,0 +1,18 @@
+{
+    "data_quality": {
+        "completeness": 1.0,
+        "uniqueness": 1.0,
+        "numeric_validity": 1.0
+    },
+    "drift": {
+        "Open": "N/A",
+        "Close": "N/A",
+        "Volume": "N/A"
+    },
+    "anomalies": {},
+    "agent_reasoning": {
+        "summary": "Detected drifts in []. Recommend checking API refresh timing.",
+        "impact": "Low",
+        "action": "All stable."
+    }
+}
